@@ -4,6 +4,7 @@ namespace GuildTracker
 {
     using System.Threading.Tasks;
     using ArgentPonyWarcraftClient;
+    using GuildTracker.Common.Connection;
 
     class Program
     {
@@ -14,19 +15,29 @@ namespace GuildTracker
             var clientId = "0fb0c38b57264472bc1d22d1f7ee02fb";
             var secret = "nj6PVzGcmypAPIJPhtOvss6KCsSPKFTv";
 
+
             var client = new WarcraftClient(clientId,secret, Region.Europe, Locale.en_GB);
 
             var realmSlug = "aggra-português";
 
+            var connection = new ArgentPonyConnection(clientId,secret,"Europe","en_GB");
 
-            var guildRoster = await client.GetGuildRosterAsync(
-                realmSlug,
-                "darksoul",
-                "profile-eu");
+            connection.SetRealm(realmSlug);
+            connection.SetProfile("profile-eu");
 
-            foreach (var member in guildRoster.Value.Members)
+            var guild = connection.GetGuild("sevenwave");
+
+            Console.WriteLine($"{guild.Name} ({guild.Faction})");
+
+            foreach (var guildMember in guild.Members)
             {
-                Console.WriteLine($"{member.Character.Name,40} | {member.Character.Level,5}");
+                if (guildMember == null)
+                {
+                    Console.WriteLine();
+                    continue;
+                }
+
+                Console.WriteLine($"{guildMember.Name,30} | {guildMember.Race,20} | {guildMember.Class,20} | {guildMember.ItemLevel,4}");
             }
 
             Console.ReadLine();
