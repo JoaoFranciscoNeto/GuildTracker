@@ -1,12 +1,11 @@
 <Project Sdk="Microsoft.NET.Sdk">
 
   <PropertyGroup>
-    <OutputType>Exe</OutputType>
     <TargetFramework>netcoreapp3.1</TargetFramework>
   </PropertyGroup>
 
   <ItemGroup>
-    <ProjectReference Include="..\GuildTracker.Common\GuildTracker.Common.csproj" />
+    <PackageReference Include="ArgentPonyWarcraftClient" Version="4.1.0" />
   </ItemGroup>
 
 </Project>
