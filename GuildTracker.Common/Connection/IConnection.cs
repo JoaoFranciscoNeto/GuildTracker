@@ -9,15 +9,13 @@
 
     public interface IConnection
     {
-        void SetRealm(string realm);
-        Guild GetGuild(string name);
+        Guild GetGuild(string name, string realm);
     }
 
     public class ArgentPonyConnection : IConnection
     {
         private readonly IWarcraftClient client;
 
-        private string realm;
         private string profile;
 
         public ArgentPonyConnection(string clientId, string clientSecret, string regionString, string localeString)
@@ -38,26 +36,15 @@
 
             this.client = new WarcraftClient(clientId,clientSecret,region,locale);
         }
-
-        public void SetRealm(string realmString)
-        {
-            this.realm = realmString;
-        }
-
         public void SetProfile(string profileString)
         {
             this.profile = profileString;
         }
 
-        public Guild GetGuild(string name)
+        public Guild GetGuild(string name, string realm)
         {
-            if (this.realm == null)
-            {
-                throw new ApplicationException("Realm was not set.");
-            }
-
             var rosterRequest = this.client.GetGuildRosterAsync(
-                this.realm,
+                realm,
                 name,
                 this.profile);
 

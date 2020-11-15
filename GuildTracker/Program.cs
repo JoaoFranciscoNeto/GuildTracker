@@ -5,26 +5,51 @@ namespace GuildTracker
     using System.Threading.Tasks;
     using ArgentPonyWarcraftClient;
     using GuildTracker.Common.Connection;
+    using Microsoft.Extensions.Configuration;
+    using MongoDB.Bson.Serialization.Serializers;
 
     class Program
     {
-        static async Task Main(string[] args)
+        private static void Main(string[] args)
         {
             Console.WriteLine("Hello World!");
 
-            var clientId = "0fb0c38b57264472bc1d22d1f7ee02fb";
-            var secret = "nj6PVzGcmypAPIJPhtOvss6KCsSPKFTv";
+            var configuration = new ConfigurationBuilder()
+                .AddJsonFile("appsettings.json")
+                .Build();
+
+            var blizzardConfig = configuration.GetSection("Blizzard");
 
 
-            var client = new WarcraftClient(clientId,secret, Region.Europe, Locale.en_GB);
+            var connection = new ArgentPonyConnection(blizzardConfig["ClientId"], blizzardConfig["ClientSecret"], "Europe","en_GB");
 
-            var realmSlug = "aggra-português";
-
-            var connection = new ArgentPonyConnection(clientId,secret,"Europe","en_GB");
-
-            connection.SetRealm(realmSlug);
             connection.SetProfile("profile-eu");
 
+            var applicationConfig = configuration.GetSection("Application");
+            var guildsConfig = applicationConfig.GetSection("Guilds").GetChildren();
+
+            foreach (var guildConfig in guildsConfig)
+            {
+                var guildArray = guildConfig.Value.Split(",");
+
+                var guild = connection.GetGuild(
+                    guildArray[0],
+                    guildArray[1]);
+                Console.WriteLine($"{guildArray[0]} ({guildArray[1]})");
+
+                foreach (var guildMember in guild.Members)
+                {
+                    if (guildMember == null)
+                    {
+                        Console.WriteLine();
+                        continue;
+                    }
+
+                    Console.WriteLine($"{guildMember.Name,30} | {guildMember.Race,20} | {guildMember.Class,20} | {guildMember.ItemLevel,4}");
+                }
+
+            }
+            /*
             var guild = connection.GetGuild("sevenwave");
 
             Console.WriteLine($"{guild.Name} ({guild.Faction})");
@@ -39,7 +64,7 @@ namespace GuildTracker
 
                 Console.WriteLine($"{guildMember.Name,30} | {guildMember.Race,20} | {guildMember.Class,20} | {guildMember.ItemLevel,4}");
             }
-
+            */
             Console.ReadLine();
         }
     }
