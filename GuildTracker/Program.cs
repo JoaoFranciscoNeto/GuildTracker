@@ -5,6 +5,8 @@ namespace GuildTracker
     using System.Threading.Tasks;
     using ArgentPonyWarcraftClient;
     using GuildTracker.Common.Connection;
+    using GuildTracker.Common.Database;
+    using GuildTracker.Common.Models;
     using Microsoft.Extensions.Configuration;
     using MongoDB.Bson.Serialization.Serializers;
 
@@ -28,6 +30,8 @@ namespace GuildTracker
             var applicationConfig = configuration.GetSection("Application");
             var guildsConfig = applicationConfig.GetSection("Guilds").GetChildren();
 
+            var db = new MongoConnection(configuration);
+
             foreach (var guildConfig in guildsConfig)
             {
                 var guildArray = guildConfig.Value.Split(",");
@@ -36,6 +40,8 @@ namespace GuildTracker
                     guildArray[0],
                     guildArray[1]);
                 Console.WriteLine($"{guildArray[0]} ({guildArray[1]})");
+
+                db.StoreGuild(new GuildRecord(guild,DateTime.Now));
 
                 foreach (var guildMember in guild.Members)
                 {

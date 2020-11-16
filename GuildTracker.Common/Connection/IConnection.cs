@@ -4,8 +4,8 @@
     using System.Linq;
     using ArgentPonyWarcraftClient;
     using GuildTracker.Common.Models;
-    using Guild = GuildTracker.Common.Models.Guild;
-    using Member = GuildTracker.Common.Models.Member;
+    using Guild = Models.Guild;
+    using Member = Models.Member;
 
     public interface IConnection
     {
