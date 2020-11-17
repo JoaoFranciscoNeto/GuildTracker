@@ -24,7 +24,7 @@ jobs:
     - name: Test
       run: dotnet test --no-restore --verbosity normal
     - name: Publish
-      run: dotnet publish --PROJECT GuildTracker --configuration Release -o bin/output
+      run: dotnet publish GuildTracker --configuration Release -o bin/output
     - name: Publish Artifact
       uses: actions/upload-artifact@v2
       with:
