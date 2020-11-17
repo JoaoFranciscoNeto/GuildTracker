@@ -32,6 +32,7 @@ jobs:
         USERNAME: ${{ secrets.USERNAME }}
         PORT: ${{ secrets.PORT }}
         PASSWORD: ${{ secrets.PASSWORD }}
+        passphrase : ${{ secrets.PASSPHRASE}}
       with:
         source: "bin/output"
         target: "/opt/app"
