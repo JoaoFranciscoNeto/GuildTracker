@@ -71,7 +71,6 @@ namespace GuildTracker
                 Console.WriteLine($"{guildMember.Name,30} | {guildMember.Race,20} | {guildMember.Class,20} | {guildMember.ItemLevel,4}");
             }
             */
-            Console.ReadLine();
         }
     }
 }
