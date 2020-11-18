@@ -61,7 +61,7 @@
             {
                 Faction = guildRoster.Guild.Faction.Name,
                 Name = guildRoster.Guild.Name,
-                Members = guildRoster.Members.Select(m => this.GetMember(m.Character.Name,m.Character.Realm.Slug)),
+                Members = guildRoster.Members.Select(m => this.GetMember(m.Character.Name,m.Character.Realm.Slug)).Where(m=>m!=null),
             };
         }
 

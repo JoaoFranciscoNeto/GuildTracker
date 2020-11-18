@@ -39,38 +39,10 @@ namespace GuildTracker
                 var guild = connection.GetGuild(
                     guildArray[0],
                     guildArray[1]);
-                Console.WriteLine($"{guildArray[0]} ({guildArray[1]})");
 
                 db.StoreGuild(new GuildRecord(guild,DateTime.Now));
 
-                foreach (var guildMember in guild.Members)
-                {
-                    if (guildMember == null)
-                    {
-                        Console.WriteLine();
-                        continue;
-                    }
-
-                    Console.WriteLine($"{guildMember.Name,30} | {guildMember.Race,20} | {guildMember.Class,20} | {guildMember.ItemLevel,4}");
-                }
-
             }
-            /*
-            var guild = connection.GetGuild("sevenwave");
-
-            Console.WriteLine($"{guild.Name} ({guild.Faction})");
-
-            foreach (var guildMember in guild.Members)
-            {
-                if (guildMember == null)
-                {
-                    Console.WriteLine();
-                    continue;
-                }
-
-                Console.WriteLine($"{guildMember.Name,30} | {guildMember.Race,20} | {guildMember.Class,20} | {guildMember.ItemLevel,4}");
-            }
-            */
         }
     }
 }
