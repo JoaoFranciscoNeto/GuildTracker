@@ -36,9 +36,12 @@ namespace GuildTracker
             {
                 var guildArray = guildConfig.Value.Split(",");
 
-                var guild = connection.GetGuild(
-                    guildArray[0],
-                    guildArray[1]);
+                var request = new GuildRequest
+                {
+                    Name = guildArray[0], Realm = guildArray[1]
+                };
+
+                var guild = connection.GetGuild(request);
 
                 db.StoreGuild(new GuildRecord(guild,DateTime.Now));
 
