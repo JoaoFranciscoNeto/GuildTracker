@@ -128,6 +128,7 @@ namespace GuildTracker.Common.Connection
             return new Equipment
             {
                 ItemLevel = equipment.EquippedItems.Average(e => e.Level.Value),
+                EquippedItems = equipment.EquippedItems.Select(i=>new EquipmentItem{ItemLevel = (int) i.Level.Value,Name = i.Name,Slot = i.Slot.Name})
             };
         }
     }
