@@ -136,7 +136,7 @@ namespace GuildTracker.Common.Connection
 
             var equipment = equipmentRequest.Result.Value;
 
-            if (equipment == null || equipment.EquippedItems == null)
+            if (equipment?.EquippedItems == null)
                 return null;
 
             return new Equipment
