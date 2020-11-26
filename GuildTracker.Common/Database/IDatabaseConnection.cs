@@ -4,10 +4,11 @@
 
 namespace GuildTracker.Common.Database
 {
+    using System.Collections.Generic;
     using GuildTracker.Common.Models;
 
     public interface IDatabaseConnection
     {
-        void StoreGuild(GuildRecord guild);
+        public void StoreGuilds(IEnumerable<GuildRecord> guilds);
     }
 }

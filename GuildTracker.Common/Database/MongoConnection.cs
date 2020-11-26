@@ -5,6 +5,8 @@
 namespace GuildTracker.Common.Database
 {
     using System;
+    using System.Collections;
+    using System.Collections.Generic;
     using GuildTracker.Common.Models;
     using Microsoft.Extensions.Configuration;
     using MongoDB.Driver;
@@ -20,16 +22,15 @@ namespace GuildTracker.Common.Database
             var connectionString =
                 $"mongodb+srv://{dbConfig["User"]}:{dbConfig["Password"]}@guild-tracker-0.1bmbc.mongodb.net/{dbName}?ssl=true&retryWrites=true&w=majority&connect=replicaSet";
 
-            Console.WriteLine(connectionString);
             var client = new MongoClient(connectionString);
             var database = client.GetDatabase(dbName);
             
             this.collection = database.GetCollection<GuildRecord>("guild-records");
         }
 
-        public void StoreGuild(GuildRecord guild)
+        public void StoreGuilds(IEnumerable<GuildRecord> guilds)
         {
-            this.collection.InsertOne(guild);
+            this.collection.InsertMany(guilds);
         }
     }
 }

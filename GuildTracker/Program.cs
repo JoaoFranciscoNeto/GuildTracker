@@ -2,6 +2,9 @@
 
 namespace GuildTracker
 {
+    using System.Collections;
+    using System.Collections.Generic;
+    using System.Linq;
     using System.Threading.Tasks;
     using ArgentPonyWarcraftClient;
     using GuildTracker.Common.Connection;
@@ -32,24 +35,32 @@ namespace GuildTracker
 
             var db = new MongoConnection(configuration);
 
+
+
+            var guilds = GetGuilds(guildsConfig,connection);
+
+            db.StoreGuilds(guilds);
+        }
+
+        private static IEnumerable<GuildRecord> GetGuilds(IEnumerable<IConfigurationSection> guildsConfig,ArgentPonyConnection connection)
+        {
             foreach (var guildConfig in guildsConfig)
             {
                 var guildArray = guildConfig.Value.Split(",");
 
                 var request = new GuildRequest
                 {
-                    Name = guildArray[0], Realm = guildArray[1]
+                    Name = guildArray[0],
+                    Realm = guildArray[1]
                 };
 
                 var guild = connection.GetGuild(request);
 
-                if (guild == null)
+                if (guild != null)
                 {
-                    continue;
+                    Console.WriteLine($"{guild.Name,40} | {guild.Members.Count()}");
+                    yield return new GuildRecord(guild,DateTime.Now);
                 }
-
-                db.StoreGuild(new GuildRecord(guild,DateTime.Now));
-
             }
         }
     }

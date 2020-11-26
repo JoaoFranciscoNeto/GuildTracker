@@ -102,7 +102,7 @@ namespace GuildTracker.Common.Connection
             return new Member
             {
                 Class = characterProfile.CharacterClass.Name,
-                ItemLevel = equipment?.ItemLevel ?? 0,
+                Equipment = equipment,
                 Name = characterProfile.Name,
                 Race = characterProfile.Race.Name,
                 Level = characterProfile.Level,
