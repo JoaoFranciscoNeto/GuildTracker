@@ -92,14 +92,20 @@ namespace GuildTracker.Common.Connection
 
             var characterProfile = profileRequest.Result.Value;
 
-            var equipment = this.GetEquipment(characterProfile.Name, realmName);
+            Equipment equipment = null;
+
+            if (characterProfile.Level >= 50)
+            {
+                equipment = this.GetEquipment(characterProfile.Name,realmName);
+            }
 
             return new Member
             {
                 Class = characterProfile.CharacterClass.Name,
                 ItemLevel = equipment?.ItemLevel ?? 0,
                 Name = characterProfile.Name,
-                Race = characterProfile.Race.Name
+                Race = characterProfile.Race.Name,
+                Level = characterProfile.Level,
             };
         }
 
