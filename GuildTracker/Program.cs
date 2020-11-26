@@ -34,9 +34,7 @@ namespace GuildTracker
             var guildsConfig = applicationConfig.GetSection("Guilds").GetChildren();
 
             var db = new MongoConnection(configuration);
-
-
-
+            
             var guilds = GetGuilds(guildsConfig,connection);
 
             db.StoreGuilds(guilds);
