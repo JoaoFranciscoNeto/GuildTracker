@@ -43,6 +43,11 @@ namespace GuildTracker
 
                 var guild = connection.GetGuild(request);
 
+                if (guild == null)
+                {
+                    continue;
+                }
+
                 db.StoreGuild(new GuildRecord(guild,DateTime.Now));
 
             }
