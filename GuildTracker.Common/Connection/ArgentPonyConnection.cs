@@ -70,6 +70,9 @@ namespace GuildTracker.Common.Connection
         {
             foreach (var member in members)
             {
+                if (member.Character.Level <= 50)
+                    continue;;
+
                 Member m = null;
                 try
                 {
@@ -79,7 +82,6 @@ namespace GuildTracker.Common.Connection
                 }
                 catch (AggregateException ex)
                 {
-                    Console.WriteLine(ex.Message);
                 }
 
                 if (m != null)

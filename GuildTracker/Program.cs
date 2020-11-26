@@ -34,25 +34,25 @@ namespace GuildTracker
             var guildsConfig = applicationConfig.GetSection("Guilds").GetChildren();
 
             var db = new MongoConnection(configuration);
-            
-            var guilds = GetGuilds(guildsConfig,connection);
+            var request = guildsConfig.Select( g=>
+            {
+                var guildArray = g.Value.Split(",");
+                return new GuildRequest
+                {
+                    Name = guildArray[0], Realm = guildArray[1]
+                };
+            });
 
-            db.StoreGuilds(guilds);
+            var guilds = GetGuilds(request, connection);
+
+            db.StoreGuilds(guilds.ToArray());
         }
 
-        private static IEnumerable<GuildRecord> GetGuilds(IEnumerable<IConfigurationSection> guildsConfig,ArgentPonyConnection connection)
+        private static IEnumerable<GuildRecord> GetGuilds(IEnumerable<GuildRequest> guildRequests,ArgentPonyConnection connection)
         {
-            foreach (var guildConfig in guildsConfig)
+            foreach (var guildRequest in guildRequests)
             {
-                var guildArray = guildConfig.Value.Split(",");
-
-                var request = new GuildRequest
-                {
-                    Name = guildArray[0],
-                    Realm = guildArray[1]
-                };
-
-                var guild = connection.GetGuild(request);
+                var guild = connection.GetGuild(guildRequest);
 
                 if (guild != null)
                 {
