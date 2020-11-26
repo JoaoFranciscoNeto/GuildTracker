@@ -68,12 +68,23 @@ namespace GuildTracker.Common.Connection
 
         private IEnumerable<Member> GetMembers(IEnumerable<GuildMember> members)
         {
-            return members
-                .Select(guildMember => 
-                    this.GetMember(
-                        guildMember.Character.Name,
-                        guildMember.Character.Realm.Slug))
-                .Where(member => member != null);
+            foreach (var member in members)
+            {
+                Member m = null;
+                try
+                {
+                    m = this.GetMember(
+                        member.Character.Name,
+                        member.Character.Realm.Slug);
+                }
+                catch (AggregateException ex)
+                {
+                    Console.WriteLine(ex.Message);
+                }
+
+                if (m != null)
+                    yield return m;
+            }
         }
 
         private Member GetMember(string memberName, string realmName)
