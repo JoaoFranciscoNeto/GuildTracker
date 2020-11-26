@@ -136,6 +136,9 @@ namespace GuildTracker.Common.Connection
 
             var equipment = equipmentRequest.Result.Value;
 
+            if (equipment == null)
+                return null;
+
             return new Equipment
             {
                 ItemLevel = equipment.EquippedItems.Average(e => e.Level.Value),
