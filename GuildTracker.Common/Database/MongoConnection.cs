@@ -20,7 +20,7 @@ namespace GuildTracker.Common.Database
         {
             var dbConfig = configuration.GetSection("Database");
             var connectionString =
-                $"mongodb+srv://{dbConfig["User"]}:{dbConfig["Password"]}@guild-tracker-0.1bmbc.mongodb.net/{dbName}?ssl=true&retryWrites=true&w=majority&connect=replicaSet";
+                $"mongodb+srv://{dbConfig["User"]}:{dbConfig["Password"]}@guild-tracker-0.1bmbc.mongodb.net/{dbName}?retryWrites=true&w=majority";
 
             var client = new MongoClient(connectionString);
             var database = client.GetDatabase(dbName);
